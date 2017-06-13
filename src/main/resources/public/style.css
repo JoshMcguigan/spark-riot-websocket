@@ -76,3 +76,18 @@ li {
     50%  { transform: scale(1.05); }
     to   { transform: none;        }
 }
+
+#wrapper {
+    width: 800px;
+    height: auto;
+}
+#left {
+    width: 400px;
+    height: auto;
+    float: left;
+}
+#right {
+    width: 200px;
+    height: auto;
+    float: left;
+}
