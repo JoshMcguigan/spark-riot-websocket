@@ -2,25 +2,27 @@
     <div id="wrapper">
         <section id="left">
             <div id="chatControls">
-                <input id="message" placeholder="Type your message" onkeyup={onKeyUp}>
+                <input id="message" ref="message" placeholder="Type your message" onkeyup={onKeyUp}>
                 <button id="send" onclick={onClick}>Send</button>
             </div>
 
-            <Article each={ messages }>
+            <Article each={messages}>
                 <b>
-                    { sender } says:
+                    {sender} says:
                 </b>
                 <p>
-                    { message }
+                    {message}
                 </p>
                 <span class="timestamp">
-                    { timestamp }
+                    {timestamp}
                 </span>
             </Article>
         </section>
 
         <section id="right">
-            <ul id="userlist"> <li each={ users }>{ user }</li> </ul>
+            <ul id="userlist">
+                <li each={users}>{user}</li>
+            </ul>
         </section>
     </div>
 
@@ -52,7 +54,7 @@
         }
 
         onClick(e) {
-            sendMessage(document.getElementById("message").value);
+            sendMessage(self.refs.message.value);
         }
 
         onKeyUp(e) {
@@ -62,7 +64,7 @@
         function sendMessage(message) {
             if (message !== "") {
                 webSocket.send(message);
-                document.getElementById("message").value = "";
+                self.refs.message.value.value = "";
             }
         }
     </script>
