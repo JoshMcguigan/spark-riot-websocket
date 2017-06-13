@@ -1,12 +1,11 @@
+import org.eclipse.jetty.websocket.api.Session;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.eclipse.jetty.websocket.api.Session;
-import org.json.JSONObject;
-
-import static j2html.TagCreator.*;
 import static spark.Spark.*;
 
 public class Chat {
@@ -27,8 +26,10 @@ public class Chat {
         userUsernameMap.keySet().stream().filter(Session::isOpen).forEach(session -> {
             try {
                 session.getRemote().sendString(String.valueOf(new JSONObject()
-                    .put("userMessage", createHtmlMessageFromSender(sender, message))
-                    .put("userlist", userUsernameMap.values())
+                        .put("message", message)
+                        .put("sender", sender)
+                        .put("timestamp", getTimestampString())
+                        .put("userList", userUsernameMap.values())
                 ));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -36,13 +37,8 @@ public class Chat {
         });
     }
 
-    //Builds a HTML element with a sender-name, a message, and a timestamp,
-    private static String createHtmlMessageFromSender(String sender, String message) {
-        return article(
-            b(sender + " says:"),
-            span(attrs(".timestamp"), new SimpleDateFormat("HH:mm:ss").format(new Date())),
-            p(message)
-        ).render();
+    public static String getTimestampString(){
+        return new SimpleDateFormat("HH:mm:ss").format(new Date());
     }
 
 }
